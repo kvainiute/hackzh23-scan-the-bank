@@ -2,6 +2,16 @@ from transformers import pipeline
 import re
 
 #question_answerer = pipeline("question-answering", model='distilbert-base-cased-distilled-squad')
+ner = pipeline("ner", aggregation_strategy="simple")
+
+def checkNer(resNer):
+    for item in resNer:
+        if item['entity_group'] == 'PER':
+            return True
+        if item['entity_group'] == 'ORG':
+            return True
+    return False
+
 def classify(file_content):
     #
     # direct sensitive data
@@ -22,7 +32,18 @@ def classify(file_content):
     if hasIBAN and hasEmail:
         return True
 
-    return "review"
+    # return "review"
+
+
+    # full name NER
+
+    resNer = ner(file_content)
+    return checkNer(resNer)
+
+
+
+
+
     # full name
     fullName = question_answerer(
         question = "What is the person's full name?",
