@@ -3,7 +3,7 @@
 /files/*
 .DS_Store
 /*.csv
-
+/app/*.csv
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
