@@ -46,6 +46,8 @@ def classifier(file_path):
                 return 'False'
             case '.pem':
                 return 'True'
+            case '.log':
+                return 'False'
 
         file_content = file_converter.convert(file_path)
         return classify(file_content)
