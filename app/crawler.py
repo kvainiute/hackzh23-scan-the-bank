@@ -24,6 +24,7 @@ import pickle
 import text_crawler
 import file_converter
 import magic
+import chardet
 
 
 def save_dict_as_pickle(labels, filename):
@@ -32,26 +33,29 @@ def save_dict_as_pickle(labels, filename):
 
 
 def classifier(file_path):
-    encodings = []
+    # print(file_path)
     try:
-        blob = open(file_path, 'rb').read()
-        m = magic.open(magic.MAGIC_MIME_ENCODING)
-        m.load()
-        encoding = m.buffer(blob)
-        encodings.append(encoding)
-        if encoding == 'unknown-8bit':
-            print(file_path)
-            encoding = 'utf-8'
-        file_content = open(file_path, encoding=encoding).read()
-        return classify(file_content)
+        mime = magic.from_file(file_path, mime=True)
+        if 'text/' in mime:
+            # print('A')
+            file_content = open(file_path, encoding='utf-8').read()
+            return classify(file_content)
+        else:
+            # print('B')
+            file_content = file_converter.convert(file_path)
+            return classify(file_content)
     except:
         try:
-            file_content = file_converter.convert(file_path)
-            if file_content is None:
+            blob = open(file_path, 'rb').read()
+            encoding = chardet.detect(blob)['encoding']
+            if encoding is None:
+                # print('D')
                 return 'not-converted'
+            # print('C', encoding)
+            file_content = open(file_path, encoding=encoding).read()
             return classify(file_content)
         except Exception as error:
-            print(file_path, error)
+            # print(file_path, error)
             return 'review'
 
 def classify(file_content):

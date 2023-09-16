@@ -1,12 +1,10 @@
 from PyPDF2 import PdfReader
 from pathlib import Path
 import pandas
-import magic
+from docx2python import docx2python
 
 def convert(file_path):
     suffix = Path(file_path).suffix
-    mime = magic.from_file(file_path, mime=True)
-    print(suffix, mime)
     match suffix:
         case '.pdf':
             reader = PdfReader(file_path)
@@ -17,6 +15,10 @@ def convert(file_path):
             return text
         case '.xlsx':
             return pandas.read_excel(file_path).to_string()
-        case '.ps1':
-            return
+        case '.docx':
+            with docx2python(file_path, 'app/misc/') as docx_content:
+                return docx_content.text
+        # case '.jpg':
+        # case '.png':
+    return IOError('File cannot be converted')
 
