@@ -7,7 +7,7 @@ def evaluate(labels):
     
     correct = {}
 
-    with open('labels.csv', mode='r') as file:
+    with open('/app/labels.csv', mode='r') as file:
         csv_reader = csv.DictReader(file)
     
         for row in csv_reader:
@@ -46,5 +46,7 @@ def evaluate(labels):
     print(f"false_false:  +2 x {false_false}  = {false_false*+2}")
     print(f"false_true:   -2 x {false_true}   = {false_true*-2}")
     print(f"false_review: -1 x {false_review} = {false_review*-1}")
-
-    print("total: ", true_true*20 + true_false*-20 + true_review*10 + false_false*2 + false_true*-2 + false_review*-1)
+    total = true_true*20 + true_false*-20 + true_review*10 + false_false*2 + false_true*-2 + false_review*-1
+    maxPoints = 5300
+    print("total: ", total)
+    print("percentage: ", (total / maxPoints)*100, "%")

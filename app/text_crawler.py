@@ -1,8 +1,10 @@
 from transformers import pipeline
 import re
 
-ner = pipeline("ner", aggregation_strategy="simple")
-
+ner = pipeline("ner",
+               aggregation_strategy="simple",
+               model= "models/bert-base-NER",
+               tokenizer = "models/bert-base-NER")
 def checkNer(resNer):
     for item in resNer:
         print(item)
