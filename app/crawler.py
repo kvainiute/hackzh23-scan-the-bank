@@ -35,11 +35,11 @@ def classifier(file_path):
     try:
         match(file_path.suffix):
             case '.mp3':
-                return 'False'
+                return False
             case '.pem':
-                return 'True'
+                return True
             case '.log':
-                return 'False'
+                return False
 
         file_content = file_converter.convert(file_path)
         return classify(file_content)

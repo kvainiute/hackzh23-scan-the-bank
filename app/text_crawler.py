@@ -1,11 +1,7 @@
 from transformers import pipeline
 import re
 
-#question_answerer = pipeline("question-answering", model='distilbert-base-cased-distilled-squad')
-ner = pipeline("ner",
-               aggregation_strategy="simple",
-               model= "models/bert-base-NER",
-               tokenizer = "models/bert-base-NER")
+ner = pipeline("ner", aggregation_strategy="simple")
 
 def checkNer(resNer):
     for item in resNer:
@@ -46,9 +42,7 @@ def classify(file_content):
 
     if not isIndirect:
         # Phone number regex
-        phone_number_regex = r"^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}$"
+        phone_number_regex = r"[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}"
         isIndirect = bool(re.search(phone_number_regex, file_content))
 
-    if isDirect and isIndirect:
-        return 'True'
-    return 'False'
+    return isDirect and isIndirect
