@@ -23,7 +23,6 @@ from pathlib import Path
 import pickle
 import text_crawler
 import file_converter
-import magic
 import chardet
 
 
@@ -35,17 +34,11 @@ def save_dict_as_pickle(labels, filename):
 def classifier(file_path):
     # print(file_path)
     try:
-        mime = magic.from_file(file_path, mime=True)
-        if 'text/' in mime:
-            # print('A')
-            file_content = open(file_path, encoding='utf-8').read()
-            return classify(file_content)
-        else:
-            # print('B')
-            file_content = file_converter.convert(file_path)
-            return classify(file_content)
-    except:
+        file_content = file_converter.convert(file_path)
+        return classify(file_content)
+    except Exception as error:
         try:
+            # print ('A', error)
             blob = open(file_path, 'rb').read()
             encoding = chardet.detect(blob)['encoding']
             if encoding is None:
@@ -54,9 +47,9 @@ def classifier(file_path):
             # print('C', encoding)
             file_content = open(file_path, encoding=encoding).read()
             return classify(file_content)
-        except Exception as error:
-            # print(file_path, error)
-            return 'review'
+        except Exception as e:
+            # print('B', e)
+            return 'not-converted'
 
 def classify(file_content):
     return text_crawler.classify(file_content)
