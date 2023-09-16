@@ -8,7 +8,6 @@ from zipfile import ZipFile
 import magic
 import extract_msg
 
-
 def convert(file_path):
     suffix = Path(file_path).suffix
     mime = magic.from_file(file_path, mime=True)
@@ -52,4 +51,3 @@ def convert(file_path):
 def convertImage(file_path):
     img = Image.open(file_path)
     return pytesseract.image_to_string(img)
-

@@ -24,12 +24,19 @@ import pickle
 import text_crawler
 import file_converter
 import chardet
+import evaluation
 
+def textContent(file_path):
+    try:
+        with open(file_path) as f:
+            file_content = f.read()
+            return classify(file_content)
+    except:
+        return "review"
 
 def save_dict_as_pickle(labels, filename):
     with open(filename, "wb") as handle:
         pickle.dump(labels, handle, protocol=pickle.HIGHEST_PROTOCOL)
-
 
 def classifier(file_path):
     try:
@@ -50,6 +57,30 @@ def classify(file_content):
     return text_crawler.classify(file_content)
 
 
+# def classifier(file_path):
+#     match file_path.suffix:
+#         # If it is a `.txt` file, read out the content
+#         # case ".txt":
+#         #     return textContent(file_path)
+#         # case ".pub":
+#         #     return textContent(file_path)
+#         # case ".md":
+#         #     return textContent(file_path)
+#         # case ".ps1":
+#         #     return textContent(file_path)
+#         # case ".msg":
+#         #     return textContent(file_path)
+#         # case ".html":
+#         #     return textContent(file_path)
+#         case ".pem":
+#             return True
+#         # case ".csv":
+#         #     return textContent(file_path)
+#         case ".log":
+#             return textContent(file_path)
+#         case _:
+#             return "review"
+
 def main():
     # Get the path of the directory where this script is in
     script_dir_path = Path(os.path.realpath(__file__)).parents[1]
@@ -67,6 +98,9 @@ def main():
 
         # Save the label dictionary as a Pickle file
         save_dict_as_pickle(labels, script_dir_path / 'results' / 'crawler_labels.pkl')
+
+        # Evaluate the labels
+        evaluation.evaluate(labels)
     else:
         print("Please place the files in the corresponding folder")
 
