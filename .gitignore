@@ -1,5 +1,6 @@
 # Custom ignores
 /results/*
+/models
 /files/*
 .DS_Store
 /*.csv

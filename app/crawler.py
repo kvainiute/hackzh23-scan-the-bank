@@ -27,14 +27,6 @@ import chardet
 import evaluation
 import datetime
 
-def textContent(file_path):
-    try:
-        with open(file_path) as f:
-            file_content = f.read()
-            return classify(file_content)
-    except:
-        return "review"
-
 def save_dict_as_pickle(labels, filename):
     with open(filename, "wb") as handle:
         pickle.dump(labels, handle, protocol=pickle.HIGHEST_PROTOCOL)
