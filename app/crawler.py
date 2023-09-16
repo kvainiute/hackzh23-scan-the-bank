@@ -25,6 +25,7 @@ import text_crawler
 import file_converter
 import chardet
 import evaluation
+import datetime
 
 def textContent(file_path):
     try:
@@ -44,6 +45,8 @@ def classifier(file_path):
         return classify(file_content)
     except:
         try:
+            if file_path.suffix == '.mp3':
+                return 'False'
             blob = open(file_path, 'rb').read()
             encoding = chardet.detect(blob)
             if encoding['encoding'] is None:
@@ -90,11 +93,14 @@ def main():
     if os.path.exists(file_dir_path):
         # Initialize the label dictionary
         labels = {}
-
         # Loop over all items in the file directory
         for file_name in os.listdir(file_dir_path):
             file_path = file_dir_path / file_name
+            a = datetime.datetime.now()
             labels[file_name] = classifier(file_path)
+            b = datetime.datetime.now()
+            c = b - a
+            print(file_path.suffix, c.microseconds)
 
         # Save the label dictionary as a Pickle file
         save_dict_as_pickle(labels, script_dir_path / 'results' / 'crawler_labels.pkl')
