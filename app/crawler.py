@@ -41,12 +41,16 @@ def save_dict_as_pickle(labels, filename):
 
 def classifier(file_path):
     try:
+        match(file_path.suffix):
+            case '.mp3':
+                return 'False'
+            case '.pem':
+                return 'True'
+
         file_content = file_converter.convert(file_path)
         return classify(file_content)
     except:
         try:
-            if file_path.suffix == '.mp3':
-                return 'False'
             blob = open(file_path, 'rb').read()
             encoding = chardet.detect(blob)
             if encoding['encoding'] is None:
@@ -58,31 +62,6 @@ def classifier(file_path):
 
 def classify(file_content):
     return text_crawler.classify(file_content)
-
-
-# def classifier(file_path):
-#     match file_path.suffix:
-#         # If it is a `.txt` file, read out the content
-#         # case ".txt":
-#         #     return textContent(file_path)
-#         # case ".pub":
-#         #     return textContent(file_path)
-#         # case ".md":
-#         #     return textContent(file_path)
-#         # case ".ps1":
-#         #     return textContent(file_path)
-#         # case ".msg":
-#         #     return textContent(file_path)
-#         # case ".html":
-#         #     return textContent(file_path)
-#         case ".pem":
-#             return True
-#         # case ".csv":
-#         #     return textContent(file_path)
-#         case ".log":
-#             return textContent(file_path)
-#         case _:
-#             return "review"
 
 def main():
     # Get the path of the directory where this script is in
