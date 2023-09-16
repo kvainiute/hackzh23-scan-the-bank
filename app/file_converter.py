@@ -6,7 +6,7 @@ import magic
 def convert(file_path):
     suffix = Path(file_path).suffix
     mime = magic.from_file(file_path, mime=True)
-    # print(suffix, mime)
+    print(suffix, mime)
     match suffix:
         case '.pdf':
             reader = PdfReader(file_path)
@@ -17,4 +17,6 @@ def convert(file_path):
             return text
         case '.xlsx':
             return pandas.read_excel(file_path).to_string()
+        case '.ps1':
+            return
 

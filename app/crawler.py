@@ -32,20 +32,26 @@ def save_dict_as_pickle(labels, filename):
 
 
 def classifier(file_path):
+    encodings = []
     try:
         blob = open(file_path, 'rb').read()
         m = magic.open(magic.MAGIC_MIME_ENCODING)
         m.load()
         encoding = m.buffer(blob)
+        encodings.append(encoding)
+        if encoding == 'unknown-8bit':
+            print(file_path)
+            encoding = 'utf-8'
         file_content = open(file_path, encoding=encoding).read()
         return classify(file_content)
-    except Exception as error:
-        print(file_path, error)
+    except:
         try:
             file_content = file_converter.convert(file_path)
+            if file_content is None:
+                return 'not-converted'
             return classify(file_content)
-        except:
-            # print(file_path)
+        except Exception as error:
+            print(file_path, error)
             return 'review'
 
 def classify(file_content):
