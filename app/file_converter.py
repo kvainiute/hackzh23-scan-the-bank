@@ -44,6 +44,9 @@ def convert(file_path):
                 return '\n'.join(contents)
             case '.msg':
                 return extract_msg.Message(file_path).getJson()
+            case '.log':
+                file_content = open(file_path, encoding='utf-8').read()
+                return file_content
         return IOError('File cannot be converted')
 
 def convertImage(file_path):

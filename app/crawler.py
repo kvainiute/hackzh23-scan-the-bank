@@ -32,24 +32,19 @@ def save_dict_as_pickle(labels, filename):
 
 
 def classifier(file_path):
-    # print(file_path)
     try:
         file_content = file_converter.convert(file_path)
         return classify(file_content)
-    except Exception as error:
+    except:
         try:
-            # print ('A', error)
             blob = open(file_path, 'rb').read()
-            encoding = chardet.detect(blob)['encoding']
-            if encoding is None:
-                # print('D')
-                return 'not-converted'
-            # print('C', encoding)
-            file_content = open(file_path, encoding=encoding).read()
+            encoding = chardet.detect(blob)
+            if encoding['encoding'] is None:
+                return 'review'
+            file_content = open(file_path, encoding=encoding['encoding'], errors="ignore").read()
             return classify(file_content)
-        except Exception as e:
-            # print('B', e)
-            return 'not-converted'
+        except:
+            return 'review'
 
 def classify(file_content):
     return text_crawler.classify(file_content)
