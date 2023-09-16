@@ -7,6 +7,11 @@ def classify(file_content):
     # direct sensitive data
     #
     
+    # RSA private key
+    hasRSA = file_content.find('-----BEGIN RSA PRIVATE KEY-----') != -1
+    if hasRSA:
+        return True
+    
     # email regex
     email_regex = r"[\w\.-]+@[\w\.-]+"
     hasEmail = bool(re.search(email_regex, file_content))
