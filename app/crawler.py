@@ -21,6 +21,9 @@ things are satisfied:
 import os
 from pathlib import Path
 import pickle
+import text_crawler
+import file_converter
+import magic
 
 
 def save_dict_as_pickle(labels, filename):
@@ -29,19 +32,24 @@ def save_dict_as_pickle(labels, filename):
 
 
 def classifier(file_path):
-    # Check the data type
-    if file_path.suffix == ".txt":
-        # Open the file to read out the content
-        with open(file_path) as f:
-            file_content = f.read()
-            # If the file contains the word "hello" label it as true
-            if file_content.find("hello") != -1:
-                return "True"
-            else:
-                return "False"
-    else:
-        # If it is not a `.txt` file the set the label to "review"
-        return "review"
+    try:
+        blob = open(file_path, 'rb').read()
+        m = magic.open(magic.MAGIC_MIME_ENCODING)
+        m.load()
+        encoding = m.buffer(blob)
+        file_content = open(file_path, encoding=encoding).read()
+        return classify(file_content)
+    except Exception as error:
+        print(file_path, error)
+        try:
+            file_content = file_converter.convert(file_path)
+            return classify(file_content)
+        except:
+            # print(file_path)
+            return 'review'
+
+def classify(file_content):
+    return text_crawler.classify(file_content)
 
 
 def main():
