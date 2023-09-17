@@ -16,6 +16,10 @@ for item in data:
         case 'review':
             in_review.append(item)
 
+print(f"Compliant: {len(compliant)}")
+print(f"Non Compliant: {len(non_compliant)}")
+print(f"In Review: {len(in_review)}")
+
 f = open("results/compliant.txt", "w")
 f.write('\n'.join(compliant))
 f.close()
