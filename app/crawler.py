@@ -24,8 +24,6 @@ import pickle
 import text_crawler
 import file_converter
 import chardet
-import evaluation
-import datetime
 
 def save_dict_as_pickle(labels, filename):
     with open(filename, "wb") as handle:
@@ -69,17 +67,13 @@ def main():
         # Loop over all items in the file directory
         for file_name in os.listdir(file_dir_path):
             file_path = file_dir_path / file_name
-            a = datetime.datetime.now()
             labels[file_name] = classifier(file_path)
-            b = datetime.datetime.now()
-            c = b - a
-            print(file_path.suffix, c.microseconds)
 
         # Save the label dictionary as a Pickle file
         save_dict_as_pickle(labels, script_dir_path / 'results' / 'crawler_labels.pkl')
 
-        # Evaluate the labels
-        evaluation.evaluate(labels)
+        # Evaluate the labels (internal testing)
+        # evaluation.evaluate(labels)
     else:
         print("Please place the files in the corresponding folder")
 
